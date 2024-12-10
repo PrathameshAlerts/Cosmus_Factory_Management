@@ -46,7 +46,7 @@
                 <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ms-3">
                     <label for="id_party_name" class="me-3" >Party A/C Name :</label>
-                    <select class="product2Select" name="party_name" required id="id_party_name" disabled>
+                    <select class="product2Select text-black" name="party_name" required id="id_party_name" disabled>
                         {% if product_pur_vouch_form.instance.id %}
                         <option value="{{product_pur_vouch_form.instance.party_name.id}}">{{product_pur_vouch_form.instance.party_name.name}}</option>
                         {% elif not form.instance.id %}
@@ -81,7 +81,11 @@
                 <span id="SupplierError" class="error-messages"></span>
                 <div class="d-flex ms-2">
                     <label for="id_supplier_invoice_number" class="" >Supplier No :</label>
+                    {% if product_pur_vouch_form.instance.id %}
+                    <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{product_pur_vouch_form.instance.supplier_invoice_number}}" maxlength="255" readonly>
+                    {% elif not product_pur_vouch_form.instance.id %}
                     <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{product_pur_vouch_form.instance.supplier_invoice_number}}" maxlength="255" required  aria-required="true">
+                    {% endif %}
                 </div>
                
                 <div class="d-flex ms-3">
@@ -98,7 +102,7 @@
             <div class="d-flex mb-3">
                 <div class="d-flex">
                     <label for="id_GST_numbers" class="me-2" >Finished godowns :</label>
-                    <select name="finished_godowns" required id="id_finished_godowns" class="item-select">
+                    <select name="finished_godowns" required id="id_finished_godowns" class="item-select text-dark">
                         {% for warehouse in warehouses %}
                           <option value="{{ warehouse.pk }}">{{ warehouse.warehouse_name_finished }}</option>
                         {% endfor %}
@@ -184,7 +188,7 @@
                             <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value=""readonly >
                         </td>
                         <td><input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly></td>
-                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer; display: none;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
                         
                     </tr>
                     {% else %}
@@ -252,7 +256,7 @@
             <div class="ms-2">
                 {% if product_pur_vouch_instance.total_qc_qty > 0 %}
                 <input readonly type="number" class="product_row" name="productRow" id="id_productRow" value="1">
-                <button disabled type="button" class="item-btn mb-3" id="addRowButton">Add +</button>
+                <button style="display: none;" type="button" class="item-btn mb-3" id="addRowButton">Add +</button>
                 {% else %}
                 <input  type="number" class="product_row" name="productRow" id="id_productRow" value="1">
                 <button type="button" class="item-btn mb-3" id="addRowButton">Add +</button>

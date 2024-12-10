@@ -34,12 +34,11 @@
             <td>{{ warehouse_product_transfer.destination_warehouse.warehouse_name_finished }}</td>
             <td>{{warehouse_product_transfer.created_date}}</td>
             {% if warehouse_product_transfer.all_qc_qty > 0 %}
-            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i style="color:black" class="fa-solid fa-pen-to-square"></i></span></a></td>
-            <td><button disabled class="border-0 bg-transparent delete-btn" data-item-id="{{warehouse_product_transfer.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
+            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i style="color:black" class="fa-solid fa-eye"></i></span></a></td> 
             {% else %}
-            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i  class="fa-solid fa-pen-to-square"></i></span></a></td>
-            <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{warehouse_product_transfer.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
+            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i  class="fa-solid fa-pen-to-square"></i></span></a></td> 
             {% endif %}
+            <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{warehouse_product_transfer.id}}" data-key="{{warehouse_product_transfer.all_qc_qty}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
           </tr>
           
           
@@ -85,15 +84,21 @@
     $('.delete-btn').click(function () {
         var $thisRow = $(this).closest('tr');
         var itemId = $(this).data('item-id');
+        var dataKey = $(this).data('key')
         var name = $thisRow.find('td').eq(1).text();
         var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
 
         // Update modal content
         $('#modal-body-text').html('Are you sure you want to delete this cutting ' + coloredName + '?');
         $('#exampleModal').modal('show');
-
+        $('#confirmDeleteButton').attr('data-key',dataKey)
         // Handle confirm delete button click
         $('#confirmDeleteButton').off('click').on('click', function () {
+          var dataKey = $(this).data('key')
+          if(dataKey > 0){
+            $('#modal-body-text').html('Can not Delete this product already assign the bin ');
+            $('#confirmDeleteButton').css('display','none')
+          }else{
             $.ajax({
                 url: "/producttransfertowarehousedelete/",
                 type: "POST",
@@ -117,6 +122,7 @@
 
                     // Close the modal
                     $('#exampleModal').modal('hide');
+                    window.reload()
                 },
                 error: function (error) {
                     console.error('Error:', error);
@@ -126,6 +132,8 @@
                     $('#confirmDeleteButton').prop('disabled', false).text('Yes');
                 }
             });
+          }
+            
         });
     });
 

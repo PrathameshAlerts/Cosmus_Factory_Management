@@ -14,7 +14,11 @@
 
     <div class="d-flex mb-2">
         <label for="id_voucher_no" class="">Voucher No:</label>
+        {% if masterstockform.instance.pk %}
+        <input value="{{masterstockform.instance.voucher_no}}" class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no" readonly>
+        {% elif not masterstockform.instance.pk %}
         <input value="{{masterstockform.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">
+        {% endif %}
         <div>
             <label for="" class="item-form">Source Godown:</label>
             <p>(Transfer from)</p>
@@ -25,10 +29,6 @@
                 {% if masterstockform.instance.pk %}
                 <option value="{{masterstockform.instance.source_godown.id}}">
                     {{masterstockform.instance.source_godown.godown_name_raw}}</option>
-                {% for godown in godowns %}
-                <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-                {% endfor %}
-
                 {% elif not masterstockform.instance.pk %}
 
                 <option value=""></option>
@@ -222,7 +222,7 @@
         var forms = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS').value;
         for(var i=0; i<forms; i++){
             var stockId = document.getElementById('id_rawstocktrasferrecords_set-' + i +'-id').value;
-            console.log(stockId)
+        
             if(stockId !== ""){
                 var vouchareNo = document.getElementById('id_voucher_no');
                 var stockItemName = document.getElementById('id_stock_name_' + i);

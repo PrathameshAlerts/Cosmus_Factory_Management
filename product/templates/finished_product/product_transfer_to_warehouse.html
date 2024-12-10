@@ -9,7 +9,11 @@
       <input type="hidden" id="productTransferDate" value="{{dict_to_send}}">
       <div class="d-flex mb-2">
           <label for="id_voucher_no" class="">Voucher No:</label>
+          {% if form.instance.pk %}
+          <input value="{{form.instance.voucher_no}}" class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no" readonly>
+          {% elif not form.instance.pk %}
           <input value="{{form.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">
+          {% endif %}
           <div>
               <label for="" class="item-form">Source warehouse:</label>
               <p>(Transfer from)</p>
@@ -20,10 +24,6 @@
                   {% if form.instance.pk %}
                     <option value="{{form.instance.source_warehouse.id}}">{{form.instance.source_warehouse.godown_name_finished}}</option>
                         
-                    {% for godown in godowns %}
-                    <option value="{{godown.id}}">{{godown.godown_name_finished}}</option>
-                    {% endfor %}
-  
                   {% elif not form.instance.pk %}
   
                     <option value=""></option>
@@ -45,10 +45,7 @@
               <select class="item-select destination_godowns" required name="destination_warehouse" id="id_destination_warehouse">
                 {% if form.instance.pk %}
                   <option value="{{form.instance.destination_warehouse.id}}">{{form.instance.destination_warehouse.warehouse_name_finished}}</option>
-                      
-                  {% for warehouse in warehouses %}
-                  <option value="{{warehouse.id}}">{{warehouse.warehouse_name_finished}}</option>
-                  {% endfor %}
+    
 
                 {% elif not form.instance.pk %}
 
@@ -67,9 +64,9 @@
           
       </div>
      
-      <div class=" ms-3">
+      <div class="">
           <table class="table table-striped table-hover table-bordered" id="mainProductForm">
-              <thead>
+              <thead class="name_absolute sticky-top">
                   <tr>
                       <th>No</th>
                       <th>Product Name</th>
@@ -83,6 +80,7 @@
               <tbody class="mainTableList">
                   {{ formset.management_form}}
                   {% for form in formset %}
+            
                   {% if voucher_instance.qc_all_qty > 0 %}
                   {{ form.id }}
                   <tr>
@@ -109,7 +107,7 @@
                           <input readonly type="text" value="{{form.instance.remarks|default_if_none:''}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
                       </td>
                       <td>
-                          <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input disabled type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
+                          <span class="delete-btn border-0 bg-transparent" style="cursor: pointer; display: none;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input disabled type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
                       </td>
                   </tr>
                   {% else %}
@@ -146,7 +144,7 @@
               </tbody>
           </table>
           {% if voucher_instance.qc_all_qty > 0 %}
-          <button disabled type="button" class="create-btn" id="addRowButton">Add +</button>
+          <button style="display: none;" type="button" class="create-btn" id="addRowButton">Add +</button>
           {% else %}
           <button type="button" class="create-btn" id="addRowButton">Add +</button>
           {% endif %}
@@ -192,6 +190,7 @@
                       itemNameElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-products`;
                       itemNameElement.name = `finished_goods_transfer_records_set-${newFormCount}-products`;
                       itemNameElement.value = "";
+                      itemNameElement.style.readonly ="false";
   
                       const selectElement = newTable.querySelector('.stock_input_name[name^="select_product_name_"]');
                       selectElement.id = `select_product_name_${newFormCount}`;
@@ -228,6 +227,9 @@
   
                       mainTable.appendChild(newTable);
                       deleteRow();
+                    editStockTransferProduct()
+                
+                    
                   } else {
                       console.error("No visible rows found to clone.");
                   }
@@ -255,6 +257,24 @@
           deleteRow();
          
       });
+      function editStockTransferProduct() {
+        var forms = document.getElementById('id_finished_goods_transfer_records_set-TOTAL_FORMS').value;
+        console.log(forms)
+        for(var i=0; i<forms; i++){
+            var stockId = document.getElementById('id_finished_goods_transfer_records_set-' + i +'-id').value;
+        
+            if(stockId !== ""){
+             
+                var stockItemName = document.getElementById('id_finished_goods_transfer_records_set-'+ i+'-products');
+                stockItemName.readOnly = true;
+            
+                var stockQty = document.getElementById('id_finished_goods_transfer_records_set-'+i+'-product_quantity_transfer');
+                stockQty.readOnly = true;
+            }
+        }
+      
+    }
+    editStockTransferProduct()
 
       $(document).ready(function () {
           var searchedItemNameDict;
@@ -638,8 +658,8 @@
               })  
                      
   
-                      var index = 0; // Declare index outside of the event listener
-                      var indexbool = true;
+                var index = 0; // Declare index outside of the event listener
+                var indexbool = true;
   
                 $(document).on('keydown', 'input[name$="-products"]', function(event) {
                       const $inputField = $(this);
@@ -760,37 +780,12 @@
                       if (event.key === 'Tab' && enterPressed) {
                       enterPressed = false; // Reset Enter key handling
                       return true; // Allow default Tab behavior
-                  }
+                    }
               
-                });
-            
-          }
-   
-
-      })
-
-  </script>
-  <script>
-    function editStockTransferProduct() {
-        var forms = document.getElementById('id_finished_goods_transfer_records_set-TOTAL_FORMS').value;
-        for(var i=0; i<forms; i++){
-            var stockId = document.getElementById('id_finished_goods_transfer_records_set-' + i +'-id').value;
-            console.log(stockId)
-            if(stockId !== ""){
-                var vouchareNo = document.getElementById('id_voucher_no');
-                var source_warehouse = document.getElementById('id_source_warehouse');
-                var destination_warehouse =  document.getElementById('id_destination_warehouse');
-
-                vouchareNo.readOnly = true;
-                source_warehouse.disabled = true; 
-                destination_warehouse.disabled = true; 
-                
-
+                }); 
             }
-        }
-      
-    }
-    editStockTransferProduct()
+        })
+
   </script>
 
 {% endblock body %}

@@ -7429,6 +7429,8 @@ def delete_bin_in_rack(request,bin_id):
 
 
 def purchase_order_for_puchase_voucher_rm_create_update(request,p_id=None):
+
+    party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
     if p_id:
         order_instance = purchase_order_master_for_puchase_voucher_rm.objects.get(id=p_id)
         master_form = Purchaseordermasterforpuchasevoucherrmform(instance=order_instance)
@@ -7457,7 +7459,7 @@ def purchase_order_for_puchase_voucher_rm_create_update(request,p_id=None):
             print(master_form.errors)
             print(formset.errors)
         return redirect('purchase-order-for-puchase-voucher-rm-create-update')
-    return render(request,'accounts/purchaseorderforpuchasevoucherrmcreateupdate.html',{'master_form':master_form,'formset':formset})
+    return render(request,'accounts/purchaseorderforpuchasevoucherrmcreateupdate.html',{'master_form':master_form,'formset':formset,'party_names':party_names})
 
 
 
