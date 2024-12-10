@@ -1,4 +1,5 @@
 
+from hashlib import blake2b
 from django.db import models
 from django.conf import settings
 from django.forms import CharField, ValidationError
@@ -960,7 +961,7 @@ class labour_workin_approval_report(models.Model):
 
 class raw_material_production_estimation(models.Model):
     raw_material_godown_id = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
-
+    narration = models.CharField(null=True, blank=True)
 
 
 class raw_material_product_ref_items(models.Model):
@@ -1176,12 +1177,12 @@ class purchase_order_master_for_puchase_voucher_rm(models.Model):
     po_no = models.IntegerField(unique=True,null=False,blank=False)
     party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
     payment_term = models.CharField(max_length=20, null=True, blank=True)
-
+    fright_transport = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
 
 class purchase_order_for_puchase_voucher_rm(models.Model):
     master_instance = models.ForeignKey(purchase_order_master_for_puchase_voucher_rm, on_delete=models.CASCADE)
     item_name = models.ForeignKey(Item_Creation,on_delete=models.PROTECT)
-    quantity = models.IntegerField()
-    rate = models.IntegerField()
+    quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    rate = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
 
 

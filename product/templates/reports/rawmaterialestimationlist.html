@@ -20,6 +20,7 @@
             <tr>
                 <th>No</th>
                 <th>Estimation No</th>
+                <th>Narration</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -29,6 +30,7 @@
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{record.raw_material_godown_id.godown_name_raw}}</td>
+                <td>{{record.narration | default_if_none:''}}</td>
                 <td><a href = "{% url 'rawmaterial-estimation-update' record.pk %}"> <i class="fa-solid fa-pen-to-square px-2"></i> </a></td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
             </tr>

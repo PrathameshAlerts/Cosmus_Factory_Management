@@ -8,7 +8,6 @@ from operator import attrgetter, itemgetter
 import os
 import uuid
 from django.conf import settings
-
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
 from django.contrib.auth.decorators import login_required
@@ -38,39 +37,51 @@ from openpyxl.styles import Border, Side
 import requests
 
 from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
-                       FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Finished_goods_warehouse, Godown_finished_goods, Godown_raw_material,
-                         Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
-                           Product2SubCategory, Product_warehouse_quantity_through_table,  ProductImage, RawStockTransferMaster, RawStockTrasferRecords, StockItem,
-                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, finished_goods_warehouse_racks, finished_goods_warehouse_zone, finished_product_warehouse_bin, finishedgoodsbinallocation, godown_item_report_for_cutting_room,
-                               gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
-                                 packaging, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
-                                 purchase_order_for_raw_material, purchase_order_master_for_puchase_voucher_rm, purchase_order_raw_material_cutting, 
-                                 purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, raw_material_production_total,
-                                   set_prod_item_part_name, shade_godown_items,
-                                   shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
+                    FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Finished_goods_warehouse, Godown_finished_goods, Godown_raw_material,
+                    Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
+                    Product2SubCategory, Product_warehouse_quantity_through_table,  ProductImage, RawStockTransferMaster, RawStockTrasferRecords, StockItem,
+                    SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee,
+                    finished_goods_warehouse_racks, finished_goods_warehouse_zone, 
+                    finished_product_warehouse_bin, finishedgoodsbinallocation, godown_item_report_for_cutting_room,
+                    gst, item_color_shade, item_godown_quantity_through_table,
+                    item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item,
+                    labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items,
+                    labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
+                    packaging, product_2_item_through_table, product_godown_quantity_through_table, 
+                    product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout,
+                    product_to_item_labour_workout, purchase_order, 
+                    purchase_order_for_raw_material, purchase_order_master_for_puchase_voucher_rm, 
+                    purchase_order_raw_material_cutting, 
+                    purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
+                    raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, raw_material_production_total,
+                    set_prod_item_part_name, shade_godown_items,
+                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
+
 
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                     CustomPProductaddFormSet, Finished_goods_Stock_TransferMaster_form, ProductCreateSkuFormsetCreate,
-                     ProductCreateSkuFormsetUpdate, Purchaseordermasterforpuchasevoucherrmform, cutting_room_form,
-                       factory_employee_form, finished_goods_warehouse_racks_form, finished_goods_warehouse_zone_form, finished_product_warehouse_bin_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, product_purchase_voucher_master_form, purchase_order_for_raw_material_cutting_items_form, 
-                       purchase_order_to_product_cutting_form, raw_material_product_estimation_items_form, raw_material_product_estimation_product_2_item_form, raw_material_production_estimation_form,raw_material_stock_trasfer_items_formset,
+                    ProductCreateSkuFormsetUpdate, Purchaseordermasterforpuchasevoucherrmform, cutting_room_form,
+                    factory_employee_form, finished_goods_warehouse_racks_form, finished_goods_warehouse_zone_form, finished_product_warehouse_bin_form, 
+                    labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, 
+                    labour_workout_cutting_items_form, ledger_types_form, product_purchase_voucher_master_form, purchase_order_for_raw_material_cutting_items_form, 
+                    purchase_order_to_product_cutting_form, raw_material_product_estimation_items_form, raw_material_product_estimation_product_2_item_form, 
+                    raw_material_production_estimation_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
-                     OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
-                       StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
-                        ProductImagesFormSet, ProductVideoFormSet, purchase_order_form,purchase_voucher_items_godown_formset_shade_change,
-                         gst_form, item_purchase_voucher_master_form,
-                           packaging_form, product_main_category_form,  Product2ItemFormsetExtraForm,Product2CommonItemFormSetExtraForm,
-                            product_sub_category_form, purchase_voucher_items_formset,raw_material_product_estimation_formset_update,
-                             purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
-                                shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
-                                purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,product_purchase_voucher_items_formset_update,
-                                purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset_create,
-                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,
-                                raw_material_product_estimation_formset, Finished_goods_transfer_records_formset_update,
-                                stock_transfer_instance_formset_only_for_update,product_purchase_voucher_items_instance_formset_only_for_update, subcat_and_bin_form,
-                                transfer_product_to_bin_formset, purchase_product_to_bin_formset,FinishedProductWarehouseBinFormSet,Purchaseorderforpuchasevoucherrmformset)
+                    OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
+                    StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
+                    ProductImagesFormSet, ProductVideoFormSet, purchase_order_form,purchase_voucher_items_godown_formset_shade_change,
+                    gst_form, item_purchase_voucher_master_form,
+                    packaging_form, product_main_category_form,  Product2ItemFormsetExtraForm,Product2CommonItemFormSetExtraForm,
+                    product_sub_category_form, purchase_voucher_items_formset,raw_material_product_estimation_formset_update,
+                    purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
+                    shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
+                    Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
+                    purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,product_purchase_voucher_items_formset_update,
+                    purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset_create,
+                    purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,
+                    raw_material_product_estimation_formset, Finished_goods_transfer_records_formset_update,
+                    stock_transfer_instance_formset_only_for_update,product_purchase_voucher_items_instance_formset_only_for_update, subcat_and_bin_form,
+                    transfer_product_to_bin_formset, purchase_product_to_bin_formset,FinishedProductWarehouseBinFormSet,Purchaseorderforpuchasevoucherrmformset)
 
 
 logger = logging.getLogger('product_views')
@@ -2191,6 +2202,7 @@ def purchasevouchercreateupdate(request, pk = None):
         item_color_out = ''
         item_per_out = ''
         item_gst_out = 0
+        item_m_code_out = ''
         
     
         if item_value is not None: 
@@ -2205,6 +2217,9 @@ def purchasevouchercreateupdate(request, pk = None):
 
             item_gst = item.Item_Creation_GST.gst_percentage
             item_gst_out = item_gst_out + item_gst
+
+            item_material_code = item.Material_code
+            item_m_code_out = item_m_code_out + item_material_code
 
         
         
@@ -2236,7 +2251,7 @@ def purchasevouchercreateupdate(request, pk = None):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,'auto_popup_flag':auto_popup_flag,
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
-                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no})
+                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,'item_m_code_out':item_m_code_out})
 
     if request.method == 'POST':
         
@@ -6070,7 +6085,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
         labour_workout_p_2_i={}
 
         sku_to_processed_pcs = dict(total_labour_workout.labour_workout_child_items.all().values_list('product_sku', 'processed_pcs'))
-        print( sku_to_processed_pcs)
+        
         for x in SKU_List:
 
             sku = str(x.split('-')[0])  
@@ -7418,7 +7433,6 @@ def delete_bin_in_rack(request,bin_id):
 
 
 def purchase_order_for_puchase_voucher_rm_create_update(request,p_id=None):
-
     party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
     if p_id:
         order_instance = purchase_order_master_for_puchase_voucher_rm.objects.get(id=p_id)
@@ -7463,12 +7477,18 @@ def purchase_order_for_puchase_voucher_rm_list(request):
 
     negetive_stock_sellerwise = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
 
-    for x in negetive_stock_sellerwise:
-        for y in x.item_purchase_voucher_master_set.all():
-            print(y.party_name.name)
-            for x in y.purchase_voucher_items_set.all():
-                print(x.item_shade.items.item_name)
+    selected_vendor = negetive_stock_sellerwise.get(id=2)
 
+    voucher_master = item_purchase_voucher_master.objects.filter(party_name = selected_vendor)
+
+    item_vendor_list = {}
+
+    for y in voucher_master:
+        for x in y.purchase_voucher_items_set.all():
+            item_id = x.item_shade.items.id
+            item_vendor_list[item_id] = x.item_shade.items.item_name
+    
+    print(item_vendor_list)
 
     return render(request,'accounts/purchaseorderforpuchasevoucherrmlist.html',{'order_list':order_list ,'negetive_stock_report':negetive_stock_report ,'negetive_stock_sellerwise':negetive_stock_sellerwise})
 
@@ -7513,7 +7533,7 @@ def itemdynamicsearchajax(request):
                 searched_item_name_dict[item_id] = item_name
             
             logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
-            
+            print(searched_item_name_dict)
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
         
         else:
