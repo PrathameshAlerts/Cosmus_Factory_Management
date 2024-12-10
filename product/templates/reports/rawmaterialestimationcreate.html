@@ -82,6 +82,12 @@
             </tbody>
         </table>
     </div>
+
+    <div>
+        <label for="id_narration">Narration</label>
+        <input type="text" name="narration" value="{{product_estimation_form.instance.narration |default_if_none:''}}" id="id_narration">
+    </div>
+
     <div>
         <button type="button" class="item-btn" id="addRowMaterial">Add +</button>
     </div> 

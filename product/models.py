@@ -1,4 +1,5 @@
 
+from hashlib import blake2b
 from django.db import models
 from django.conf import settings
 from django.forms import CharField, ValidationError
@@ -960,7 +961,7 @@ class labour_workin_approval_report(models.Model):
 
 class raw_material_production_estimation(models.Model):
     raw_material_godown_id = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
-
+    narration = models.CharField(null=True, blank=True)
 
 
 class raw_material_product_ref_items(models.Model):

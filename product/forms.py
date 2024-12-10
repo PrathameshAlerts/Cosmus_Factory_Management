@@ -897,7 +897,7 @@ class factory_employee_form(forms.ModelForm):
 class raw_material_production_estimation_form(forms.ModelForm):
     class Meta:
         model = raw_material_production_estimation
-        fields = ['raw_material_godown_id']
+        fields = ['raw_material_godown_id','narration']
 
 
 
